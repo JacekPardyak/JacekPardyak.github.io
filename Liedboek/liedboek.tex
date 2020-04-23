@@ -41,46 +41,6 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -144,7 +104,7 @@
 
 \title{Niderlandzki śpiewająco}
 \author{Jacek Pardyak}
-\date{2020-04-22}
+\date{2020-04-23}
 
 \begin{document}
 \maketitle
@@ -156,26 +116,6 @@
 \hypertarget{wstux119p}{%
 \chapter{Wstęp}\label{wstux119p}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{Sys.setlocale}\NormalTok{(}\StringTok{"LC\_ALL"}\NormalTok{,}\StringTok{"Polish"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "LC_COLLATE=Polish_Poland.1250;LC_CTYPE=Polish_Poland.1250;LC_MONETARY=Polish_Poland.1250;LC_NUMERIC=C;LC_TIME=Polish_Poland.1250"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{Sys.getlocale}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "LC_COLLATE=Polish_Poland.1250;LC_CTYPE=Polish_Poland.1250;LC_MONETARY=Polish_Poland.1250;LC_NUMERIC=C;LC_TIME=Polish_Poland.1250"
-\end{verbatim}
-
 Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading \texttt{\#}.
 
 To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.name/tinytex/}.
@@ -183,167 +123,20 @@ To compile this example to PDF, you need XeLaTeX. You are recommended to install
 \hypertarget{lata-1970-1979}{%
 \chapter{Lata 1970-1979}\label{lata-1970-1979}}
 
-We have finished a nice book.
+\hypertarget{nacht-guus-meeuwis-and-kraantje-pappie}{%
+\section{\texorpdfstring{Nacht, \emph{Guus Meeuwis and Kraantje Pappie}}{Nacht, Guus Meeuwis and Kraantje Pappie}}\label{nacht-guus-meeuwis-and-kraantje-pappie}}
 
-\hypertarget{intro}{%
-\chapter{Introduction}\label{intro}}
-
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
-
-Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\FloatTok{.1}\NormalTok{, }\FloatTok{.1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(pressure, }\DataTypeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{liedboek_files/figure-latex/nice-fig-1} 
-
-}
-
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
-
-Reference a figure by its code chunk label with the \texttt{fig:} prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can reference tables generated from \texttt{knitr::kable()}, e.g., see Table \ref{tab:nice-tab}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
-  \KeywordTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\DataTypeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \DataTypeTok{booktabs =} \OtherTok{TRUE}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{table}
-
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
-\addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
-
-\hypertarget{lata-1990---1999}{%
-\chapter{Lata 1990 - 1999}\label{lata-1990---1999}}
-
-\hypertarget{lief-ux17cyj}{%
-\section{Lief (Żyj)}\label{lief-ux17cyj}}
-
-Melodia pierwszej edycji holenderskiego Big Brothera i wielki hit z 1999 roku. Posłuchajcie sami.
-
-\hypertarget{tekst}{%
-\subsection{Tekst}\label{tekst}}
+Piosenka \textbf{Nacht} \citep{Nacht} \emph{Noc} Ćwierć wieku po Het is een nacht Guus Meeuwis wykonał ``Nacht'' wraz z raperem Kraantje Pappie. Posłuchajcie sami.
 
 \begin{column}{0.48\textwidth}
 
-Niemand hoeft alleen maar goed of slecht te zijn\\
-Niemand is alleen maar zwart of wit\\
-Iedereen is anders, anders dan je verwacht\\
-\hspace*{0.333em}\\
-Niemand die alleen maar haat of liefde voelt\\
-We zijn allemaal een mens van vlees en bloed\\
-En we kunnen niet perfect zijn want niemand weet hoe dat moet\\
-\hspace*{0.333em}\\
-\textgreater{} Leef, met je eigen talent\\
-\textgreater{} Iedereen is mooi, als bent wie je bent\\
-\textgreater{} Leef, met jezelf en elkaar\\
-\textgreater{} Iedereen is blij met dat ene gebaar\\
-\hspace*{0.333em}\\
-Niemand kan alleen maar mooi of lelijk zijn\\
-Niemand heeft de waarheid vol in beeld\\
-Maar het voordeel van de twijfel maakt ons minder verdeeld\\
-We zoeken de verschillen, waar we bruggen moeten bouwen.\\
-\hspace*{0.333em}\\
-En we plakken etiketten op het hart van iedereen.\\
-Maar het leven is geen leven als geen mens van je wil houden.\\
-Dus we moeten bruggen bouwen over alle kloven heen.\\
-Niemand hoeft alleen maar goed of slecht te zijn
-
-\end{column}
-
-\begin{column}{0.02\textwidth}
-
-\hfill\break
-
-\end{column}
-
-\begin{column}{0.48\textwidth}
-
-Nikt nie musi być albo dobry albo zły\\
-Nikt nie jest albo biały albo czarny\\
-Każdy jest inny, inny niż się spodziewasz\\
-\hspace*{0.333em}\\
-Niemand die alleen maar haat of liefde voelt\\
-We zijn allemaal een mens van vlees en bloed\\
-En we kunnen niet perfect zijn want niemand weet hoe dat moet\\
-\hspace*{0.333em}\\
-\textgreater{} Żyj z własnym talentem\\
-\textgreater{} Iedereen is mooi, als bent wie je bent\\
-\textgreater{} Leef, met jezelf en elkaar\\
-\textgreater{} Iedereen is blij met dat ene gebaar\\
-\hspace*{0.333em}\\
-Nikt nie może być tylko piękny albo brzydki\\
-Niemand heeft de waarheid vol in beeld\\
-Maar het voordeel van de twijfel maakt ons minder verdeeld\\
-We zoeken de verschillen, waar we bruggen moeten bouwen.\\
-\hspace*{0.333em}\\
-I umieszczamy etykiety na sercu każdego\\
-Ale życie nie jest życiem, jeśli nikt nie chce cię kochać\\
-Dus we moeten bruggen bouwen over alle kloven heen.\\
-Niemand hoeft alleen maar goed of slecht te zijn
-
-\end{column}
-
-\hypertarget{pomoc-jux119zykowa}{%
-\subsection{Pomoc językowa}\label{pomoc-jux119zykowa}}
-
-\textbf{Je hoeft niet bang te zijn om fouten te maken.} Nie musisz bać się popełniać błędów.\\
-\textbf{Ik zeg het alleen maar!} Po prostu to mówię!\\
-\textbf{Gele gans zelf.} Zażółć gęślą jaźń.
-
-\hypertarget{two-columns---template}{%
-\chapter{Two columns - template}\label{two-columns---template}}
-
-Below is a Div containing three child Divs side by side. The Div
-in the middle is empty, just to add more space between the left
-and right Divs.
-
-\begin{column}{0.48\textwidth}
-
-\includegraphics{liedboek_files/figure-latex/unnamed-chunk-8-1.pdf}
+Het is een nacht\\
+Die je normaal alleen in films ziet\\
+Het is een nacht\\
+Die wordt bezongen in het mooiste lied\\
+Het is een nacht\\
+Waarvan ik dacht dat ik hem nooit beleven zou\\
+Maar vannacht beleef ik hem met jou oh oh
 
 \end{column}
 
@@ -355,33 +148,432 @@ and right Divs.
 
 \begin{column}{0.48\textwidth}
 
-The figure on the left-hand side shows the \texttt{cars} data.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-enim ad minim veniam, quis nostrud exercitation ullamco laboris
-nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur.
+To jest taka noc\\
+Którą widzisz zwykle tylko w filmach\\
+To jest taka noc\\
+O której mówi najpiękniejsza piosenka\\
+To jest taka noc\\
+O której myślałem, że jej nigdy nie przeżyję\\
+A którą dziś przeżywam z tobą Ooo
 
 \end{column}
 
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Op de grond ligt Châteauneuf-du-Pape\\
+De radio zacht, rond middernacht\\
+Ik hoor Suus en Freek, een blauwe dag\\
+En ik kijk hoe je slaapt, ik hou je vast\\
+Want ik weet dat het niet lang meer duurt voor jij gaat\\
+Ik snap dat jij me niet te dichtbij laat\\
+En je weer vrijmaakt en je op tijd staat\\
+Je twijfelt aan of ik wel echt meen wat ik heb gezegd\\
+En of ik nog steeds wel de echte ben\\
+En of ik niet ren naar 050 en je niet meer ken als een slechte vent\\
+Maar vannacht is dat allemaal niet de case\\
+Voor nu is het nog nooit zo mooi geweest\\
+Jij en ik, the road can wait\\
+En ben ik voor eerst opeens compleet
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Na ziemi leży Châteauneuf-du-Pape\\
+Radio cicho gra, jest koło północy\\
+Słyszę Suus i Freek, jakiś niebieski dzień\\
+Patrzę jak śpisz, przytulam cię\\
+Bo wiem, że to nie potrwa już długo zanim wyjdziesz\\
+Rozumiem, że nie pozwolisz mi się zbliżyć\\
+En je weer vrijmaakt en je op tijd staat\\
+Wątpisz, czy naprawdę mam na myśli to, co powiedziałem\\
+I czy nadal jestem prawdziwy\\
+I czy nie biegnę na 50 i już cię nie znam jak jakiś zły facet\\
+Ale dziś w nocy to w ogóle nie o to chodzi\\
+Jeszcze nigdy nie było tak pięknie\\
+Ty i ja, droga może poczekać\\
+Nagle po raz pierwszy jestem spełniony
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Als het komt, zou ik steeds met je zijn\\
+En als je wennen moet, begrijp ik baby, neem je de tijd\\
+Hier leven we voor, plus cash en baguettes\\
+En deze nacht heeft alles wat ik zocht op deze plek
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Gdyby tak się stało, zawsze byłbym z tobą\\
+A jeśli musisz się zastanowić, rozumiem to baby, nie spiesz się\\
+Po to żyjemy, plus kasa i bagietki\\
+I ta noc ma wszystko, co szukałem w tym miejscu
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Hey schat, ik zou m'n kleine teen geven voor nog één nacht\\
+Het is natuurlijk geen wonder dat ik je\\
+Donderdag al bijzonder zag in het dons gepakt heb\\
+En onze nacht werd er één als\\
+Die van Leo en Kate was\\
+We on top of the world, ben volledig gebrainwashed\\
+But I like it, yeah, jij showt wat life is\\
+En ja, je life is er een als Kylie's\\
+Maar net iets ronder en iets gezonder\\
+Dat is precies hoe mijn vibe is, yeah\\
+Jij bent de nicest\\
+Bel de Bel, boy, bestel champagne\\
+Fuck the prices, je rolt met Crane
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Hej kochanie, oddałbym mój mały palec u nogi za jeszcze jedną noc\\
+Oczywiście to nic dziwnego, że ja ciebie\\
+Donderdag al bijzonder zag in het dons gepakt heb\\
+A nasza noc stała się taką jedną,\\
+Jaka należała do Leo i Kate\\
+Jesteśmy na szczycie świata, mam kompletnie wyprany mózg\\
+Ale lubię to, tak, pokazujesz, czym jest życie\\
+I tak, twoje życie jest takie jak życie Kylie\\
+Ale nieco bardziej zaokrąglone i nieco zdrowsze\\
+Dokładnie taki jest mój klimat, tak\\
+Jesteś najmilsza\\
+Bel de Bel, chłopie, zamówmy szampana\\
+Pieprzyć ceny, ty kręcisz z Crane
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Maar vannacht beleef ik 'm met jou, oh\\
+Ja ik hou alleen nog maar van jou\\
+Ja ik hou alleen nog maar van jou
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Ale dziś przeżywam ją z tobą Ooo\\
+I kocham tylko wyłącznie ciebie\\
+I kocham tylko wyłącznie ciebie
+
+\end{column}
+
+\vfill
+
+\textbf{Châteauneuf-du-Pape} fr. cenione wino\\
+\textbf{Suus en Freek} duet wykonujący Blauwe Dag\\
+\textbf{Leo en Kate} para z filmu Titanic\\
+\textbf{Kylie} amerykańska celebrytka\\
+\textbf{Bel de Bel} właść. fr. La Belle des belles\\
+\textbf{Crane} od Kraantje, wykonawcy piosenki
+
+\hypertarget{lata-1980-1989}{%
+\chapter{Lata 1980-1989}\label{lata-1980-1989}}
+
+\hypertarget{een-beetje-verliefd-andruxe9-hazes}{%
+\section{\texorpdfstring{Een beetje verliefd, \emph{André Hazes}}{Een beetje verliefd, André Hazes}}\label{een-beetje-verliefd-andruxe9-hazes}}
+
+Piosenka \textbf{Een beetje verliefd} \citep{Verliefd} \emph{Trochę zakochany} .
+
+\begin{column}{0.48\textwidth}
+
+In een discotheek, zat ik van de week\\
+En ik voelde mij daar zo alleen\\
+'t Was er warm en druk, ik zat naast een lege kruk\\
+Ik verlangde zo naar jou hier aan m'n zij
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+W jakiejś dyskotece byłem na tygodniu\\
+I czułem się tam bardzo samotny\\
+Było tam gorąco i tłoczno, siedziałem przy pustym stołku\\
+Tak pragnąłem cię tutaj przy moim boku
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Ja, ik denk nog steeds hoe het was geweest\\
+Toen je naast me zat hier aan de bar\\
+Ik vroeg: `'Drink je mee?'', dat vond jij oké\\
+Toen je proostend naar me keek werd ik zo week
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Tak, wciąż się zastanawiam, jak to było\\
+Gdy się do mnie przysiadłaś przy barze\\
+Spytałem: `'Napijesz się ze mną?'', zgodziłaś się\\
+Kiedy na mnie spojrzałaś przy toaście, stałem się taki miękki
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Een beetje verliefd, ik dacht een beetje verliefd\\
+Als ik wist wat jij toen dacht, had ik nooit op jou gewacht\\
+Als een kind zat ik te dromen deze nacht ben jij voor mij\\
+Maar die droom ging snel voorbij
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Trochę zakochany, myślałem trochę zakochany\\
+Gdybym wiedział, co wtedy myślisz, nigdy bym na ciebie nie czekał\\
+Jak małe dziecko ciągle marzyłem, tej nocy jesteś dla mnie\\
+Ale ten sen szybko minął
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Jij stond op en zei: `'Hou m'n plaatsje vrij\\
+Ik moet even weg maar ben zo terug''\\
+Ach, die kruk bleef leeg tot ik in de gaten kreeg\\
+Dat je wegging zonder mij, ik was nu alleen
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Wstałaś i powiedziałaś: `'Zajmij mi miejsce\\
+ja muszę na chwilę wyjść, ale zaraz wrócę''\\
+Ach, ten stołek stał pusty, dopóki nie zauważyłem\\
+Że odeszłaś beze mnie, teraz byłem sam
+
+\end{column}
+
+\vfill
+
+\textbf{Weet je wat, ik ben er zat van.} Wiesz co, mam tego dosyć.\\
+\textbf{Ik verlang ernaar met je alleen te zijn.} Pragnę być z tobą sam.\\
+\textbf{Ik heb de wet aan m'n zij(-de).} Prawo mam po swojej stronie.\\
+\textbf{Dat vind ik erg leuk.} To mi się bardzo podoba.\\
+\textbf{We zitten te praten.} Gadamy sobie.\\
+\textbf{Ik krijg dit in de gaten.} Zdaję sobie sprawę z tego
+
+\hypertarget{lata-1990---1999}{%
+\chapter{Lata 1990 - 1999}\label{lata-1990---1999}}
+
+\hypertarget{leef-han-van-eijk}{%
+\section{\texorpdfstring{Leef, \emph{Han van Eijk}}{Leef, Han van Eijk}}\label{leef-han-van-eijk}}
+
+Piosenka \textbf{Leef} \citep{Leef} \emph{Żyj} stała się hitem list przebojów po tym została użyta w pierwszej w Holandii edycji Big Brother.
+
+\begin{column}{0.48\textwidth}
+
+Niemand hoeft alleen maar goed of slecht te zijn\\
+Niemand is alleen maar zwart of wit\\
+Iedereen is anders, anders dan je verwacht
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Nikt nie musi być albo dobry albo zły\\
+Nikt nie jest albo biały albo czarny\\
+Każdy jest inny, inny niż się spodziewasz
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Niemand die alleen maar haat of liefde voelt\\
+We zijn allemaal een mens van vlees en bloed\\
+En we kunnen niet perfect zijn want niemand weet hoe dat moet
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Niemand die alleen maar haat of liefde voelt\\
+We zijn allemaal een mens van vlees en bloed\\
+En we kunnen niet perfect zijn want niemand weet hoe dat moet
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Leef, met je eigen talent\\
+Iedereen is mooi, als bent wie je bent\\
+Leef, met jezelf en elkaar\\
+Iedereen is blij met dat ene gebaar
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Żyj z własnym talentem\\
+Iedereen is mooi, als bent wie je bent\\
+Leef, met jezelf en elkaar\\
+Iedereen is blij met dat ene gebaar
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+Niemand kan alleen maar mooi of lelijk zijn\\
+Niemand heeft de waarheid vol in beeld\\
+Maar het voordeel van de twijfel maakt ons minder verdeeld\\
+We zoeken de verschillen, waar we bruggen moeten bouwen
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+Nikt nie może być tylko piękny albo brzydki\\
+Niemand heeft de waarheid vol in beeld\\
+Maar het voordeel van de twijfel maakt ons minder verdeeld\\
+We zoeken de verschillen, waar we bruggen moeten bouwen
+
+\end{column}
+
+\vfill
+
+\begin{column}{0.48\textwidth}
+
+En we plakken etiketten op het hart van iedereen\\
+Maar het leven is geen leven als geen mens van je wil houden\\
+Dus we moeten bruggen bouwen over alle kloven heen\\
+Niemand hoeft alleen maar goed of slecht te zijn
+
+\end{column}
+
+\begin{column}{0.04\textwidth}
+
+~
+
+\end{column}
+
+\begin{column}{0.48\textwidth}
+
+I umieszczamy etykiety na sercu każdego\\
+Ale życie nie jest życiem, jeśli nikt nie chce cię kochać\\
+Dus we moeten bruggen bouwen over alle kloven heen\\
+Niemand hoeft alleen maar goed of slecht te zijn
+
+\end{column}
+
+\vfill
+
+\textbf{Je hoeft niet bang te zijn om fouten te maken.} Nie musisz bać się popełniać błędów.\\
+\textbf{Ik zeg het alleen maar!} Po prostu to mówię!\\
+\textbf{Gele gans zelf.} Zażółć gęślą jaźń.
+
+\hypertarget{lata-2000---2009}{%
+\chapter{Lata 2000 - 2009}\label{lata-2000---2009}}
 
 We describe our methods in this chapter.
 
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
+\hypertarget{lata-2010---2019}{%
+\chapter{Lata 2010 - 2019}\label{lata-2010---2019}}
 
 Some \emph{significant} applications are demonstrated in this chapter.
 
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
-
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
-
-  \bibliography{book.bib,packages.bib,songs.bib}
+  \bibliography{songs.bib}
 
 \end{document}
