@@ -1,3 +1,6 @@
 Manually Correct index.html
--- > remove '.' in image address
--- > in scene gezet -- > in scène gezet
+-- > replace './images/'      with '/images/'
+-- > replace 'in scene gezet' with 'in scène gezet'
+-- > replace 'Hèze'           with 'Hèze'
+-- > replace 'jusqu'a'        with 'jusqu'à'
+-- > replace 'songs.bib'      with 'songs' 
