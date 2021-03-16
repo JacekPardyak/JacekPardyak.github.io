@@ -32,7 +32,9 @@ That documents composition and formatting can be done using lightweight **markdo
 
 Start using **resume package** with installation of the latest **RStudio**^[[http://www.rstudio.com/products/rstudio/download/](http://www.rstudio.com/products/rstudio/download/)].
 
-Then install the development version of the package from GitHub using this command.`r newthought('')`^[devtools::install_github("jacekpardyak/resume"]
+Then install the development version of the package from GitHub using this command:
+
+`devtools::install_github("jacekpardyak/resume")`
 
 Next use the **New R Markdown** dialog to create **resume** or **cover letter** from appropriate template:
 
