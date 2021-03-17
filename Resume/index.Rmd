@@ -56,4 +56,6 @@ Finally use the **Knit** button to produce resulting **document**^[[Example of t
 knitr::include_graphics("./figures/Capture3.PNG")
 ```
 
+## Possible problems
 
+If MiKTex generates errors, compile *.tex files in TeXworks once to install the missing dependencies.
