@@ -4,6 +4,6 @@
 files <- list.files("./F/", pattern = ".svg", full.names = T)
 
 for (file in files) {
-   command <- paste('inkscape  --export-type=png --export-width=WIDTH', file, sep = " ")
+   command <- paste('inkscape  --export-type=png --export-width=50', file, sep = " ")
    system(command)
 }
