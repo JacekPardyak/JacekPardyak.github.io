@@ -1,0 +1,28 @@
+---
+title: "Tik Tok"
+author: "JG Pardyak"
+date: "4/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r tiktok, echo=FALSE}
+if(!require(remotes)) {
+  install.packages("remotes"); library(remotes)}
+
+if(!require(tiktokrmd)) {
+  install_github("gadenbuie/tiktokrmd"); library(tiktokrmd)}
+
+library(tidyverse)
+
+"https://www.tiktok.com/@dunglishtodutch/video/6949236919330966790" %>% tiktok_embed()
+
+# Or write a plain markdown version
+ #%>% write(file = "./Tiktok/readme.md")
+# Or as HTML without the full TikTok embedded player shenanigans
+#tiktok_html(tt, include_player = FALSE) %>% write(file = "./Tiktok/index.html")
+```
+
