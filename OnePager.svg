@@ -288,9 +288,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.28"
-     inkscape:cx="248.6815"
-     inkscape:cy="90.826252"
+     inkscape:zoom="5.12"
+     inkscape:cx="340.74906"
+     inkscape:cy="50.206795"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -872,7 +872,7 @@
          id="path10" />
     </g>
     <a
-       transform="matrix(0.45397985,0,0,0.54034675,182.24057,-14.315298)"
+       transform="matrix(0.37664746,0,0,0.45731149,223.90296,7.472049)"
        xlink:title="https://jacekpardyak.github.io/id_rsa.pub"
        target="https://jacekpardyak.github.io/id_rsa.pub"
        xlink:href="https://jacekpardyak.github.io/id_rsa.pub"
