@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+PRODID:-//ATFutures/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ical-534167a8-00cb-4d90-bc51-7023987ee78f
+DTSTART:20220609T110000
+DTEND:20220609T120000
+SUMMARY:Dutch restaurants reviews analysis
+LOCATION:Online meeting
+DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85218323015?pwd=VTBzdFl1RGFDMXRiVGxvc0haZ3lYUT09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
+END:VEVENT
+END:VCALENDAR

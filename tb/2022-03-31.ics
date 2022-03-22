@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+PRODID:-//ATFutures/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ical-4ec5fdeb-cd00-4171-81f2-402125f07cb1
+DTSTART:20220331T110000
+DTEND:20220331T120000
+SUMMARY:Malicious domain names detection with H2O
+LOCATION:Online meeting
+DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85218323015?pwd=VTBzdFl1RGFDMXRiVGxvc0haZ3lYUT09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
+END:VEVENT
+END:VCALENDAR

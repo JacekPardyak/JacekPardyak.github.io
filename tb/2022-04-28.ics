@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+PRODID:-//ATFutures/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ical-426716d7-6586-4ce2-8d3b-3aa1ddbdd3fc
+DTSTART:20220428T110000
+DTEND:20220428T120000
+SUMMARY:Create plots like BBC News
+LOCATION:Online meeting
+DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85218323015?pwd=VTBzdFl1RGFDMXRiVGxvc0haZ3lYUT09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
+END:VEVENT
+END:VCALENDAR
