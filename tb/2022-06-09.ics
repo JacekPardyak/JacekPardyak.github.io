@@ -4,11 +4,11 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:ical-534167a8-00cb-4d90-bc51-7023987ee78f
+UID:ical-a88cedec-f814-4ff7-8da0-c989e67f6134
 DTSTART:20220609T110000
 DTEND:20220609T120000
 SUMMARY:Dutch restaurants reviews analysis
 LOCATION:Online meeting
-DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85218323015?pwd=VTBzdFl1RGFDMXRiVGxvc0haZ3lYUT09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
+DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85158293510?pwd=YlVJTjFtbFhTelUvbzNGbWZ1WWtWZz09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
 END:VEVENT
 END:VCALENDAR
