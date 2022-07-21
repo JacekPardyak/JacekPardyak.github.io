@@ -4,6 +4,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Hovvme"
+      href: top.html
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<cats@catemail.com>
