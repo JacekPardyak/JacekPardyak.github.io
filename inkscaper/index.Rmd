@@ -7,6 +7,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(sf)
 ```
 
 ## R Markdown
@@ -16,15 +18,148 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+system('inkscape --version', intern = TRUE)
 ```
 
 ## Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+is_url <- function(path){
+  grepl("^https?://", path)
+}
+
+download_svg <- function(url){
+  filename = tempfile("inx", fileext = ".svg")
+  download.file(url, filename)
+  return(filename)
+}
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Function to run an Inkscape extension in Windows
+
+```{r}
+inx_extension <- function(input, extension, ext){
+  path = system('inkscape --system-data-directory', intern = TRUE)
+  inkscape_extensions_path = paste(path, "\\extensions", sep = "")
+  inkscape_python_home  = paste(gsub("\\share\\inkscape", "", path, fixed = T), "\\bin", sep = "")
+  if(is_url(input)) {
+    input_file_path = download_svg(input)
+  } else {
+    input_file_path = tempfile("inx")
+    file.copy(input, input_file_path)
+  }
+  output = tempfile("inx", fileext = ext)
+  command = tempfile(pattern = "inx_", fileext = ".bat")
+  '@ECHO OFF
+cd %s
+python.exe "%s" --output="%s"  "%s"' %>% sprintf(
+  inkscape_python_home,
+  paste(inkscape_extensions_path, extension, sep = "\\"),
+  output,
+  input_file_path) %>% writeLines(command)
+  system(command)
+  output
+}
+```
+
+and the Linux equivalent 
+
+```{r, eval=FALSE}
+inx_extension <- function(input, extension, ext){
+  path = system('inkscape --system-data-directory', intern = TRUE)
+  inkscape_extensions_path = paste(path, "/extensions", sep = "")
+  if(is_url(input)) {
+    input_file_path = download_svg(input)
+  } else {
+    input_file_path = tempfile("inx")
+    file.copy(input, input_file_path)
+  }
+  output <- tempfile("inx", fileext = ext)
+  command <- sprintf('python %s --output="%s" "%s"', paste(inkscape_extensions_path, extension, sep = "/"), output, input_file_path)
+  system(command, intern = TRUE)
+  output
+}
+```
+
+
+```{r}
+url <- 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Red_Bird.svg'
+logo <- inx_extension(input = url, extension = "dxf12_outlines.py", ext =".dxf") %>%
+  st_read()
+logo %>% ggplot() +
+  geom_sf()
+```
+
+Polygonize
+
+```{r}
+img <- url %>% inx_extension(extension = "dxf12_outlines.py", ext =".dxf") %>%
+  st_read() %>%
+  select(geometry) %>% st_union() %>% st_polygonize() %>% 
+  first() 
+
+result <- st_sfc() %>% st_sf(geometry = .)
+
+for(i in c(1: length(img))) {
+  tmp <- img %>% 
+  nth(i) %>%
+  st_sfc()  %>% st_sf(geometry = .) %>% mutate(facet = i)
+  result <- tmp %>% bind_rows(result) 
+}
+
+
+result %>% ggplot() +
+  geom_sf() +
+  geom_sf_label(aes(label = facet)) +
+  theme_void()
+```
+
+```{r}
+library(plotly)
+plot_ly(result,  split = ~facet, color = ~facet)
+```
+
+
+
+```{r}
+result <- result %>% filter(!facet %in% c(5, 56:60))
+result %>% ggplot() +
+  geom_sf() +
+  theme_void()
+```
+```{r}
+grid_spacing = 5
+grid <- result %>% st_make_grid(square = T, cellsize = c(grid_spacing, grid_spacing)) %>%
+  st_sf() %>% 
+  mutate(ID = row_number()) # add a unique ID to each grid cell
+```
+
+
+
+```{r}
+grid %>% ggplot() +
+  geom_sf() +
+  theme_void()
+```
+
+
+```{r}
+heights <- st_join(result, grid) %>% mutate(avg_nap_hoogte = 1)
+```
+
+```{r}
+heights %>% ggplot() +
+  geom_sf() +
+  theme_void()
+```
+
+```{r}
+heights_ = heights %>% mutate(geometry = st_centroid(geometry)) %>% st_coordinates() %>% as_tibble() %>% mutate(Z = 1) %>%
+  mutate(X = round(X,1)) %>%
+  mutate(Y = round(Y,1)) #%>% pivot_wider(names_from = Y, values_from = Z) %>%
+# column_to_rownames("X") %>% as.matrix()
+heights_
+```
+
