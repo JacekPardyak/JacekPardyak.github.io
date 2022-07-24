@@ -6,7 +6,7 @@ output: html_document
 ---
 
   
-```{r setup, include=FALSE}
+```{r setup2, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(plotly)
@@ -14,14 +14,33 @@ library(sf)
 ```  
 
 
+```{r, setup}
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+
+
 Scalable Vector Graphics, abbreviated: SVG, is an XML-based file format for static and dynamic vector graphics. It is an open standard of the W3C. Inkscape is an open source vector illustration program that uses the SVG format to store vector graphics.
 We start our analyses from checking Inkscape installation
 
+This is the Scalable Vector Graphic we want to analyze:
+
+```{r}
+url <- 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Red_Bird.svg'
+knitr::include_graphics(url)
+```
+
+
+As far there is no easy way to import SVG file, convert it into Simple Features and analyze using R. That's why we gonna use an external powerful and beautiful tool which is Inkscape.
 
 ```{r cars}
 system('inkscape --version', intern = TRUE)
 ```
 
+
+# Simple Features from SVG
+
+Function to convert SVG into DXF
 
 ```{r}
 is_url <- function(path){
@@ -33,11 +52,7 @@ download_svg <- function(url){
   download.file(url, filename)
   return(filename)
 }
-```
 
-Function to convert SVG into DXF
-
-```{r}
 inx_extension <- function(input, extension, ext){
   path = system('inkscape --system-data-directory', intern = TRUE)
   inkscape_extensions_path = paste(path, "\\extensions", sep = "")
@@ -81,15 +96,6 @@ inx_extension <- function(input, extension, ext){
 }
 ```
 
-```{r}
-url <- 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Red_Bird.svg'
-#browseURL(url)
-```
-
-
-```{r}
-knitr::include_graphics(url)
-```
 
 
 ```{r}  
@@ -112,9 +118,8 @@ for(i in c(1: length(logo))) {
   st_sfc()  %>% st_sf(geometry = .) %>% mutate(facet = i)
   result <- tmp %>% bind_rows(result) 
 }
-
-result %>% plot_ly(split = ~facet)
 ```
+
 
 
 ```{r}
@@ -125,47 +130,61 @@ result %>% ggplot() +
 ```
 
 
+```{r}  
+result %>% plot_ly(split = ~facet)
+```
+
+
 ```{r}
-logo <- result %>% filter(!facet %in% c(5, 10, 38, 50:52, 56:60))
+logo <- result %>% filter(!facet %in% 
+                    c(3:55, 56:60, 81)) %>% st_union()
+logo
+logo %>% st_write("Red_Bird.shp", append=FALSE)
 logo %>% ggplot() +
   geom_sf() +
   theme_void()
 ```
 
+```{r, warning=FALSE, message=FALSE}  
+result %>% filter(!facet %in% 
+                    c(3:55, 56:60, 81)) %>% plot_ly(split = ~facet)
+```
 
+# Surface from SVG
+
+```{r }
+result <- st_read("./Red_Bird.shp")
+
+result %>% ggplot() +
+  geom_sf()
+```
 
 
 ```{r}
-grid_spacing = 10
+grid_spacing = 1
 grid <- result %>% st_make_grid(what = "centers", cellsize = c(grid_spacing, grid_spacing)) %>%
   st_sf() 
 ```
 
-
-
-```{r}
-grid %>% ggplot() +
-  geom_sf() +
-  theme_void()
-```
-
-
 ```{r}
 heights <- st_join(grid, (result %>% select(geometry) %>% mutate(Z = 1))) %>% replace(is.na(.), 0) 
-```
-
-
-```{r}
-surface <- heights %>% st_coordinates() %>% as_tibble() %>% 
+z <- heights %>% st_coordinates() %>% as_tibble() %>% 
   bind_cols(heights %>% st_drop_geometry()) %>%
   mutate(X = round(X,1)) %>%
   mutate(Y = round(Y,1)) %>% pivot_wider(names_from = Y, values_from = Z) %>%
   column_to_rownames("X") %>% as.matrix()
-surface
 ```
 
-## ddd
+```{r, test-rgl, webgl=TRUE}
+x <- 1:nrow(z)  
+y <- 1:ncol(z)  
 
+colorlut <- c("#F2F2F2",  "#E34234") #"#ECB176",
+col <- colorlut[ z - min(z) + 1 ] # assign colors to heights for each point
 
-ssss
+#open3d()
+surface3d(x, y, z, color = col, back = "lines")
+
+#e34234
+#close3d()
 
