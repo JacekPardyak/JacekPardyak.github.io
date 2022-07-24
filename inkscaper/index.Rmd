@@ -5,23 +5,19 @@ date: "7/22/2022"
 output: html_document
 ---
 
-  
 ```{r setup2, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(plotly)
 library(sf)
-```  
-
+```
 
 ```{r, setup}
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
 ```
 
-
-Scalable Vector Graphics, abbreviated: SVG, is an XML-based file format for static and dynamic vector graphics. It is an open standard of the W3C. Inkscape is an open source vector illustration program that uses the SVG format to store vector graphics.
-We start our analyses from checking Inkscape installation
+Scalable Vector Graphics, abbreviated: SVG, is an XML-based file format for static and dynamic vector graphics. It is an open standard of the W3C. Inkscape is an open source vector illustration program that uses the SVG format to store vector graphics. We start our analyses from checking Inkscape installation
 
 This is the Scalable Vector Graphic we want to analyze:
 
@@ -30,13 +26,11 @@ url <- 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Red_Bird.svg'
 knitr::include_graphics(url)
 ```
 
-
 As far there is no easy way to import SVG file, convert it into Simple Features and analyze using R. That's why we gonna use an external powerful and beautiful tool which is Inkscape.
 
 ```{r cars}
 system('inkscape --version', intern = TRUE)
 ```
-
 
 # Simple Features from SVG
 
@@ -96,9 +90,7 @@ inx_extension <- function(input, extension, ext){
 }
 ```
 
-
-
-```{r}  
+```{r}
 logo <- inx_extension(input = url, extension = "dxf12_outlines.py", ext =".dxf") %>%
   st_read() %>%
   select(geometry) %>% st_union() %>% st_polygonize() %>% 
@@ -108,8 +100,7 @@ logo %>% ggplot() +
   geom_sf()
 ```
 
-
-```{r}  
+```{r}
 result <- st_sfc() %>% st_sf(geometry = .)
 
 for(i in c(1: length(logo))) {
@@ -120,8 +111,6 @@ for(i in c(1: length(logo))) {
 }
 ```
 
-
-
 ```{r}
 result %>% ggplot() +
   geom_sf() +
@@ -129,39 +118,39 @@ result %>% ggplot() +
   theme_void()
 ```
 
-
-```{r}  
+```{r}
 result %>% plot_ly(split = ~facet)
 ```
 
+```{r}
+result %>% st_write("Red_Bird.shp", append=FALSE)
+
+```
 
 ```{r}
-logo <- result %>% filter(!facet %in% 
+logo <- st_read("./Red_Bird.shp") %>% filter(!facet %in% 
                     c(3:55, 56:60, 81)) %>% st_union()
-logo
-logo %>% st_write("Red_Bird.shp", append=FALSE)
 logo %>% ggplot() +
   geom_sf() +
   theme_void()
 ```
 
-```{r, warning=FALSE, message=FALSE}  
-result %>% filter(!facet %in% 
-                    c(3:55, 56:60, 81)) %>% plot_ly(split = ~facet)
-```
-
 # Surface from SVG
 
 ```{r }
-result <- st_read("./Red_Bird.shp")
-
+result <- st_read("./Red_Bird.shp") %>% filter(!facet %in% 
+                    c(3:55, 56:60, 81)) %>% st_union() %>% st_sfc() %>% st_sf()
+result
 result %>% ggplot() +
   geom_sf()
 ```
 
+```{r}
+result
+```
 
 ```{r}
-grid_spacing = 1
+grid_spacing = 10
 grid <- result %>% st_make_grid(what = "centers", cellsize = c(grid_spacing, grid_spacing)) %>%
   st_sf() 
 ```
@@ -187,4 +176,30 @@ surface3d(x, y, z, color = col, back = "lines")
 
 #e34234
 #close3d()
+```
+
+# Animation from SVG
+
+```{r}
+library(gganimate)
+
+result_1 <- st_read("./Red_Bird.shp") %>% filter(!facet %in% 
+                    c(3:55, 56:60, 81)) %>% st_union() %>% st_sfc() %>% st_sf() %>% 
+  mutate(facet = 1)
+result_2 <- st_read("./Red_Bird.shp") %>% filter(facet %in% 
+                    c(3:55, 56:60, 81)) %>% st_union() %>% st_sfc() %>% st_sf() %>% 
+  mutate(facet = 2)
+
+result <- result_1 %>% bind_rows(result_2)
+result %>% ggplot() +
+  geom_sf()  + 
+  transition_states(
+    facet,
+    transition_length = 2,
+    state_length = 1
+  ) +
+  enter_fade() + 
+  exit_shrink() +
+  ease_aes('sine-in-out')
+```
 
