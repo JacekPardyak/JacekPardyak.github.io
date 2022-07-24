@@ -1,0 +1,129 @@
+---
+title: "Untitled"
+output: html_document
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+library(sf)
+```  
+
+We start from checking Inkscape installation
+
+
+```{r cars}
+system('inkscape --version', intern = TRUE)
+```
+
+
+```{r}
+is_url <- function(path){
+  grepl("^https?://", path)
+}
+
+download_svg <- function(url){
+  filename = tempfile("inx", fileext = ".svg")
+  download.file(url, filename)
+  return(filename)
+}
+```
+
+Function to convert SVG into DXF
+
+```{r}
+inx_extension <- function(input, extension, ext){
+  path = system('inkscape --system-data-directory', intern = TRUE)
+  inkscape_extensions_path = paste(path, "\\extensions", sep = "")
+  inkscape_python_home  = paste(gsub("\\share\\inkscape", "", path, fixed = T), "\\bin", sep = "")
+  if(is_url(input)) {
+    input_file_path = download_svg(input)
+  } else {
+    input_file_path = tempfile("inx")
+    file.copy(input, input_file_path)
+  }
+  output = tempfile("inx", fileext = ext)
+  command = tempfile(pattern = "inx_", fileext = ".bat")
+  '@ECHO OFF
+cd %s
+python.exe "%s" --output="%s"  "%s"' %>% sprintf(
+  inkscape_python_home,
+  paste(inkscape_extensions_path, extension, sep = "\\"),
+  output,
+  input_file_path) %>% writeLines(command)
+  system(command)
+  output
+}
+```
+
+with it's Linux equivalent:
+
+```{r, eval=FALSE}
+inx_extension <- function(input, extension, ext){
+  path = system('inkscape --system-data-directory', intern = TRUE)
+  inkscape_extensions_path = paste(path, "/extensions", sep = "")
+  if(is_url(input)) {
+    input_file_path = download_svg(input)
+  } else {
+    input_file_path = tempfile("inx")
+    file.copy(input, input_file_path)
+  }
+  output <- tempfile("inx", fileext = ext)
+  command <- sprintf('python %s --output="%s" "%s"', paste(inkscape_extensions_path, extension, sep = "/"), output, input_file_path)
+  system(command, intern = TRUE)
+  output
+}
+```
+
+```{r}
+url <- 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Red_Bird.svg'
+#browseURL(url)
+```
+
+
+```{r}
+knitr::include_graphics(url)
+```
+
+
+```{r}  
+logo <- inx_extension(input = url, extension = "dxf12_outlines.py", ext =".dxf") %>%
+  st_read() %>%
+  select(geometry) %>% st_union() %>% st_polygonize() %>% 
+  first()
+
+logo %>% ggplot() +
+  geom_sf()
+```
+
+
+```{r}  
+result <- st_sfc() %>% st_sf(geometry = .)
+
+for(i in c(1: length(logo))) {
+  tmp <- logo %>% 
+  nth(i) %>%
+  st_sfc()  %>% st_sf(geometry = .) %>% mutate(facet = i)
+  result <- tmp %>% bind_rows(result) 
+}
+
+result %>% plot_ly(split = ~facet)
+```
+
+
+```{r}
+result %>% ggplot() +
+  geom_sf() +
+  geom_sf_label(aes(label = facet)) +
+  theme_void()
+```
+
+
+```{r}
+logo <- result %>% filter(!facet %in% c(5, 50:52, 56:60))
+logo %>% ggplot() +
+  geom_sf() +
+  theme_void()
+```
+

@@ -1,0 +1,23 @@
+---
+title: "Untitled"
+author: "JG Pardyak"
+date: '2022-07-22'
+output: html_document
+---
+
+No need for a hook with `rgl` version >= 0.96.0, just call `rglwidget()`.
+
+```{r, setup}
+options(rgl.useNULL = TRUE) # Suppress the separate window.
+library(rgl)
+```
+
+See it work for this 3D plot without the hook:
+
+```{r}
+x <- sort(rnorm(1000))
+y <- rnorm(1000)
+z <- rnorm(1000) + atan2(x,y)
+plot3d(x, y, z, col = rainbow(1000))
+rglwidget()
+```
