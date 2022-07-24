@@ -19,3 +19,11 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
+simple-features-from-svg
+svg-path-analysis-in-r
+cover-image-path-to-the-social-sharing-image-like-imagescover.jpg
+ink
+chapters-and-sub-chapters-1
+inkscaper
+surface-from-svg
+animation-from-svg
