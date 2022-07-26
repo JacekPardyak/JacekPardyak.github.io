@@ -1,4 +1,4 @@
-about
+cover-image-path-to-the-social-sharing-image-like-imagescover.jpg
 usage
 render-book
 preview-book
@@ -7,7 +7,12 @@ a-section
 cross
 chapters-and-sub-chapters
 captioned-figures-and-tables
-parts
+spinning-globe
+flat-globe
+round-globe
+spinning-globe-1
+keep-it
+test
 footnotes-and-citations
 footnotes
 citations
@@ -16,14 +21,11 @@ equations
 theorems-and-proofs
 callout-blocks
 sharing-your-book
+rose
 publishing
 pages
 metadata-for-sharing
-simple-features-from-svg
-svg-path-analysis-in-r
-cover-image-path-to-the-social-sharing-image-like-imagescover.jpg
-ink
-chapters-and-sub-chapters-1
 inkscaper
+simple-features-from-svg
 surface-from-svg
 animation-from-svg
