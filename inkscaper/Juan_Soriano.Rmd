@@ -18,33 +18,26 @@ library(inkscaper)
 ```
 
 ```{r}
-df <- "Juan_Soriano/Retrato_de_Juan_Soriano_por_Mizael_C.svg" %>% 
+dir.create(file.path("Juan_Soriano/", "db"), showWarnings = FALSE)
+"Juan_Soriano/Retrato_de_Juan_Soriano_por_Mizael_C.svg" %>% 
   inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
-  inx_svg2sf()
+  inx_svg2sf() %>% select(geometry) %>%
+  st_write("Juan_Soriano/db/Juan_Soriano.shp")
 
+Zip_Files = list.files("Juan_Soriano/db", full.names = T)
+zip(zipfile = "Juan_Soriano/db.zip", files = Zip_Files, flags = " a -tzip",
+    zip = "C:\\Program Files\\7-Zip\\7Z")
+unlink("Juan_Soriano/db", recursive=TRUE)
 ```
+
 ```{r}
 df %>% ggplot() +
   geom_sf() 
 ```
 
 ```{r}
-df_1 <- df %>% slice(1:100)
-df_1 %>% ggplot() +
-  geom_sf()
-```
-
-```{r}
-bbox <- st_bbox(df)
-df_2 <- st_sfc() %>% st_sf()
-for (i in c(1:nrow(df_1))) {
-  tmp <- runif(2, bbox$xmin, bbox$xmax) %>% cbind(
-runif(2, bbox$ymin, bbox$ymax)) %>% 
-  st_linestring() %>% st_sfc() %>% st_sf()
-  df_2 <- df_2 %>% bind_rows(tmp)
-}
-
-df_2 <- df_2
+df_1 <- df %>% mutate(facet = 1)
+df_2 <- df %>% mutate(facet = 2)
 ```
 
 ```{r}
@@ -56,6 +49,7 @@ df_2 <- df_2 %>% st_union() %>% st_sfc() %>% st_sf() %>% mutate(facet = 2)
 ```{r}
 res <- df_1 %>% bind_rows(df_2)
 ```
+
 
 
 ```{r}
@@ -72,6 +66,27 @@ res %>%
   exit_shrink() +
   ease_aes('sine-in-out')
 ```
+
+
+
+```{r}
+bbox <- st_bbox(df)
+df_2 <- st_sfc() %>% st_sf()
+for (i in c(1:nrow(df_1))) {
+  tmp <- runif(2, bbox$xmin, bbox$xmax) %>% cbind(
+runif(2, bbox$ymin, bbox$ymax)) %>% 
+  st_linestring() %>% st_sfc() %>% st_sf()
+  df_2 <- df_2 %>% bind_rows(tmp)
+}
+
+df_2 <- df_2
+```
+
+
+
+
+
+
 
 
 ```{r}
