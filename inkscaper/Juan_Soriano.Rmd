@@ -19,7 +19,8 @@ library(inkscaper)
 
 ```{r}
 dir.create(file.path("Juan_Soriano/", "db"), showWarnings = FALSE)
-"Juan_Soriano/Retrato_de_Juan_Soriano_por_Mizael_C.svg" %>% 
+#"Juan_Soriano/Retrato_de_Juan_Soriano_por_Mizael_C.svg" 
+"https://upload.wikimedia.org/wikipedia/commons/c/c5/The_Photographer.svg" %>% 
   inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
   inx_svg2sf() %>% select(geometry) %>%
   st_write("Juan_Soriano/db/Juan_Soriano.shp")
@@ -31,13 +32,21 @@ unlink("Juan_Soriano/db", recursive=TRUE)
 ```
 
 ```{r}
+df <- "https://upload.wikimedia.org/wikipedia/commons/c/c5/The_Photographer.svg" %>% 
+  inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
+  inx_svg2sf() %>% select(geometry)
+
 df %>% ggplot() +
   geom_sf() 
 ```
 
 ```{r}
-df_1 <- df %>% mutate(facet = 1)
-df_2 <- df %>% mutate(facet = 2)
+df <- "https://upload.wikimedia.org/wikipedia/commons/c/c5/The_Photographer.svg" %>% 
+  inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
+  inx_svg2sf() %>% select(geometry) %>% st_union() %>% st_polygonize()
+
+df %>% ggplot() +
+  geom_sf() 
 ```
 
 ```{r}
