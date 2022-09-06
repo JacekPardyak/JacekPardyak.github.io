@@ -160,3 +160,78 @@ result %>% ggplot() +
   ease_aes('sine-in-out')
 ```
 
+# Appendix A - Inkscape Actions
+
+While obviously Inkscape is primarily intended as a GUI application, it can be used for doing SVG processing on the command line as well. [Inkscape Actions](https://inkscape.org/doc/inkscape-man.html) available in versions `r system('inkscape --version', intern = TRUE)` are listed below.
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+library(dplyr)
+inx_actions_list_win <- function(){
+  output = tempfile("inx_", fileext = ".txt")
+  con  = tempfile(pattern = "inx_", fileext = ".bat")
+  fmt = '@ECHO OFF
+inkscape --action-list > %s'
+  text = sprintf(fmt, output)
+  writeLines(text, con)
+  system(con)
+  text <- readLines(output)
+  text <- gsub("<b0>", "\u00B0", x = text, useBytes = F, fixed = T)
+  #dd[agrep("object-rotate-90-ccw", dd, useBytes = F, fixed = T)]
+  writeLines(text, output)
+  actions <- readr::read_delim(output, delim = ":", col_names = FALSE)
+  names(actions) = c("Action", "Description")
+  actions
+}
+inx_actions_list_win() %>% readr::write_csv("actions.csv")
+```
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(dplyr)
+"actions.csv" %>% readr::read_csv() %>% DT::datatable()
+```
+
+
+# Appendix B - Inkscape Extensions
+
+[Inkscape Extensions](https://inkscape.org/gallery/=extension/) are small programs that extend Inkscape’s functionality. They can provide features for specific tasks, experimentation, or art styles. They can also add support for special hardware or different export formats. While many extensions are included with Inkscape, you can also install extensions written by third parties or write your own. The table below shows the list of extensions available in Inkscape of version `r system('inkscape --version', intern = TRUE)` with descriptions.
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+inx_extensions_list_win <- function(){
+  path = system('inkscape --system-data-directory', intern = TRUE)
+  inkscape_extensions_path = paste(path, "\\extensions", sep = "")
+  inkscape_python_home  = paste(gsub("\\share\\inkscape", "", path, fixed = T), "\\bin", sep = "")
+  inkscape_extension_names = list.files(path = inkscape_extensions_path, pattern = ".py")
+  df <- data.frame(Extension = inkscape_extension_names, Description = NA)
+  for (i in c(1:nrow(df))) {
+    inkscape_extension_name = df$Extension[i]
+    print(inkscape_extension_name)
+    output = tempfile("inx_", fileext = ".txt")
+    con  = tempfile(pattern = "inx_", fileext = ".bat")
+    fmt = '@ECHO OFF
+cd %s
+python.exe "%s" --help  > %s'
+    text = sprintf(fmt,
+                   inkscape_python_home,
+                   paste(inkscape_extensions_path, inkscape_extension_name, sep = "\\"),
+                   output)
+    writeLines(text, con)
+    system(con)
+    output
+    inkscape_extension_description <- readLines(output)
+    df$Description[i] <- paste(inkscape_extension_description, collapse = "\n")
+  }
+
+  df
+}
+
+inx_extensions_list_win() %>% readr::write_csv("extensions.csv")
+```
+
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+"extensions.csv" %>% readr::read_csv() %>% DT::datatable()
+```
+

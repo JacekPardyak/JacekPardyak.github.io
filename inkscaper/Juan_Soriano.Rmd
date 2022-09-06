@@ -32,8 +32,9 @@ unlink("Juan_Soriano/db", recursive=TRUE)
 ```
 
 ```{r}
-df <- "https://upload.wikimedia.org/wikipedia/commons/c/c5/The_Photographer.svg" %>% 
-  inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
+#  "https://upload.wikimedia.org/wikipedia/commons/c/c5/The_Photographer.svg" 
+df <- "https://upload.wikimedia.org/wikipedia/commons/9/9e/Charlie-Chaplin.svg" %>% 
+  #inx_actions(actions = "select-all;path-simplify", ext = ".svg") %>%
   inx_svg2sf() %>% select(geometry)
 
 df %>% ggplot() +
