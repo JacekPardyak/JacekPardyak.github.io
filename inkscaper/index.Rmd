@@ -235,3 +235,18 @@ inx_extensions_list_win() %>% readr::write_csv("extensions.csv")
 "extensions.csv" %>% readr::read_csv() %>% DT::datatable()
 ```
 
+
+# Appendix C - Inkscape Help
+
+Result of the call `system('inkscape --help', intern = TRUE)`
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+output = tempfile("inx_", fileext = ".txt")
+system('inkscape --help', intern = T) %>% writeLines(output)
+tbl = readLines(output)
+for(i in 1:length(tbl)){
+    print(tbl[i])
+}
+```
+
+
