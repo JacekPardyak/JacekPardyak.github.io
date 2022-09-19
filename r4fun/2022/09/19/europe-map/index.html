@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">europe map</h1>
@@ -92,11 +92,61 @@
 <pre><code>## Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE</code></pre>
 <pre class="r"><code>library(rnaturalearth)</code></pre>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="https://jacekpardyak.github.io/r4fun/2022/09/19/europe-map/index_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="europe-entities" class="section level2">
+<h2>Europe entities</h2>
+<p>We work with all entities falling even partially under any of the various common definitions of Europe, geographical or political. <a href="https://en.wikipedia.org/wiki/Europe" class="uri">https://en.wikipedia.org/wiki/Europe</a> .
+Names as used in <code>rnaturalearth</code>.</p>
+<pre class="r"><code>sovereignties &lt;- c(
+&quot;Albania&quot;, &quot;Andorra&quot;, &quot;Armenia&quot;, &quot;Austria&quot;, &quot;Azerbaijan&quot;, &quot;Belarus&quot;, &quot;Belgium&quot;, &quot;Bosnia and Herzegovina&quot;, &quot;Bulgaria&quot;, &quot;Croatia&quot;, &quot;Cyprus&quot;, &quot;Czech Republic&quot;, &quot;Denmark&quot;, &quot;Estonia&quot;, &quot;Finland&quot;, &quot;France&quot;, &quot;Georgia&quot;, &quot;Germany&quot;, &quot;Greece&quot;, &quot;Hungary&quot;, &quot;Iceland&quot;, &quot;Ireland&quot;, &quot;Italy&quot;, &quot;Kazakhstan&quot;, &quot;Latvia&quot;, &quot;Liechtenstein&quot;, &quot;Lithuania&quot;, &quot;Luxembourg&quot;, &quot;Macedonia&quot;, &quot;Malta&quot;, &quot;Moldova&quot;, &quot;Monaco&quot;, &quot;Montenegro&quot;, &quot;Netherlands&quot;, &quot;Norway&quot;, &quot;Poland&quot;, &quot;Portugal&quot;, &quot;Republic of Serbia&quot;, &quot;Romania&quot;, &quot;Russia&quot;, &quot;San Marino&quot;, &quot;Slovakia&quot;, &quot;Slovenia&quot;, &quot;Spain&quot;, &quot;Sweden&quot;, &quot;Switzerland&quot;, &quot;Turkey&quot;, &quot;Ukraine&quot;, &quot;United Kingdom&quot;, &quot;Vatican&quot;)
+
+europe &lt;- ne_countries(scale = &quot;medium&quot;, returnclass = &quot;sf&quot;, sovereignty = sovereignties) %&gt;%
+    select(sovereignt)</code></pre>
+<pre class="r"><code>europe %&gt;% ggplot() +
+  geom_sf() +
+  coord_sf(xlim = c(-23, 40), ylim = c(33, 70)) </code></pre>
+<p><img src="https://jacekpardyak.github.io/r4fun/2022/09/19/europe-map/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="neighbours" class="section level2">
+<h2>Neighbours</h2>
+</div>
+<div id="cartoon-map" class="section level2">
+<h2>Cartoon map</h2>
+<pre class="r"><code>inx_dxf &lt;- tempfile(&quot;inx_&quot;, fileext = c(&quot;.dxf&quot;))
+europe %&gt;%
+  st_geometry() %&gt;%
+  st_write(dsn = inx_dxf, driver =&quot;DXF&quot;)</code></pre>
+<pre><code>## Writing layer `inx_44786e47686e&#39; to data source 
+##   `C:\Users\JACEKP~1\AppData\Local\Temp\RtmpgZmBG8\inx_44786e47686e.dxf&#39; using driver `DXF&#39;
+## Writing 77 features with 0 fields and geometry type Multi Polygon.</code></pre>
+<pre class="r"><code># canvas 
+canvas &lt;- matrix(c(-23, 30,
+                   -23, 73,
+                   45, 73,
+                   45, 30,
+                   -23, 30),ncol=2, byrow=TRUE) %&gt;%
+  list() %&gt;% st_polygon() %&gt;% st_sfc() %&gt;% st_sf()
+europe &lt;- st_read(inx_dxf) %&gt;% select(geometry) %&gt;%
+  st_intersection(canvas)</code></pre>
+<pre><code>## Reading layer `entities&#39; from data source 
+##   `C:\Users\Jacek Pardyak\AppData\Local\Temp\RtmpgZmBG8\inx_44786e47686e.dxf&#39; 
+##   using driver `DXF&#39;
+## Simple feature collection with 433 features and 6 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -58.49229 xmax: 180 ymax: 83.59961
+## CRS:           NA</code></pre>
+<pre class="r"><code># offset
+europe &lt;- europe %&gt;% 
+  mutate(geometry = st_buffer(geometry, dist = -.1)) %&gt;%
+  mutate(geometry = st_simplify(geometry)) %&gt;%
+  mutate(area = st_area(geometry)) %&gt;%
+  filter(area &gt; 0.1)
+
+europe %&gt;% ggplot() +
+  geom_sf() #+ theme_void()</code></pre>
+<p><img src="https://jacekpardyak.github.io/r4fun/2022/09/19/europe-map/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># write svg
+#europe %&gt;% inx_sf2svg() %&gt;% inx_write(&quot;/cartoon/europe.svg&quot;)</code></pre>
 </div>
 
     </div>
@@ -134,6 +184,9 @@
 
 
     
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
