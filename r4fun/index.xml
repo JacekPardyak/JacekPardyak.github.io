@@ -8,13 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Mon, 19 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jacekpardyak.github.io/r4fun/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>europe map</title>
-      <link>https://jacekpardyak.github.io/r4fun/2022/09/19/europe-map/</link>
+      <title>Cartoon map of Europe</title>
+      <link>https://jacekpardyak.github.io/r4fun/2022/09/19/cartoon-map-of-europe/</link>
       <pubDate>Mon, 19 Sep 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jacekpardyak.github.io/r4fun/2022/09/19/europe-map/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+      <guid>https://jacekpardyak.github.io/r4fun/2022/09/19/cartoon-map-of-europe/</guid>
+      <description>MotivationI can’t draw by hand so I want to draw this map with R. https://commons.wikimedia.org/wiki/File:Hand-Drawn_Map_of_Europe.svg
+Entities of Europelibrary(tidyverse)## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──## ✔ ggplot2 3.3.6 ✔ purrr 0.3.4## ✔ tibble 3.1.8 ✔ dplyr 1.0.9## ✔ tidyr 1.2.0 ✔ stringr 1.4.1## ✔ readr 2.1.2 ✔ forcats 0.5.1## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──## ✖ dplyr::filter() masks stats::filter()## ✖ dplyr::lag() masks stats::lag()library(sf)## Linking to GEOS 3.</description>
     </item>
     
     <item>
