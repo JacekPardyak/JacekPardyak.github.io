@@ -1,0 +1,30 @@
+---
+title: "Inkscape.jl"
+author: "JG Pardyak"
+date: 14-09-2023
+format:
+  html:
+    code-fold: true
+jupyter: julia-1.9
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{python}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{python}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
