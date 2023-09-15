@@ -1,30 +1,141 @@
 ---
 title: "Inkscape.jl"
 author: "JG Pardyak"
-date: 14-09-2023
+date: 2023-09-15
 format:
   html:
     code-fold: true
 jupyter: julia-1.9
 ---
 
-## Quarto
+## Introduction
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+This article describes how to read and manipulate `SVG` paths in Julia.
+For `Inkscape.jl` installation and basic usage see <https://github.com/JacekPardyak/Inkscape.jl>.
 
-## Running Code
+## Julia's logo
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Let's start from loading necessary modules and checking *Inkscape* version
 
-```{python}
-1 + 1
+
+```{julia}
+#import Pkg; Pkg.add(["Plots", "Pipe", "ArchGDAL", "DataFrames", "GeoDataFrames", "Luxor", "Shapefile"])
+#import Pkg; Pkg.add(url="https://github.com/JacekPardyak/Inkscape.jl.git")
+using Plots, ArchGDAL, DataFrames, Pipe, Printf, GeoDataFrames, Luxor, Shapefile, Inkscape
+
+inx_version()
 ```
 
-You can add options to executable code like this 
+Julia's downloaded `SVG` logo is enlarged 10 times and converted to `DXF` in Inkscape to be read by the `ArchGDAL` module and finally plotted using `Plots`.
 
-```{python}
-#| echo: false
-2 * 2
+```{julia}
+@pipe "https://upload.wikimedia.org/wikipedia/commons/1/1f/Julia_Programming_Language_Logo.svg" |>
+  inx_actions(_, "file-open;select-all;transform-scale:10;page-fit-to-selection;", ".svg") |>
+  inx_extension(_, "dxf12_outlines.py", ".dxf") |>
+  ArchGDAL.read(_) |>
+  ArchGDAL.getlayer(_, 0) |>
+  DataFrame(_) |>
+  _."" |> plot
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Helper function `make_poly` creates polygons from line strings in `ArchGDAL` module. Polygons are reordered and finally plotted using `Plots`.
+
+```{julia}
+function make_poly(x, shapefile)
+  res =  ArchGDAL.createlinestring()
+  for i in 1:nrow(x)
+    res = ArchGDAL.union(res, x[i, "geometry"])
+  end
+  res = ArchGDAL.polygonize(res)
+  vec = [ArchGDAL.createpolygon()] # to have proper type
+  for i in 0:(ArchGDAL.ngeom(res) - 1)
+    push!(vec, ArchGDAL.getgeom(res, i))
+  end
+  df = DataFrame(geometry=vec[2:length(vec)])
+  input_file_path = tempname() * ".shp"
+  GeoDataFrames.write(input_file_path, df)
+  if shapefile == true
+    input_file_path
+  else
+    df
+  end
+end
+
+order = [1, 2, 3, 4, 5, 6, 7, 8, 10, 9]
+@pipe "https://upload.wikimedia.org/wikipedia/commons/1/1f/Julia_Programming_Language_Logo.svg" |>
+  inx_actions(_, "file-open;select-all;transform-scale:10;page-fit-to-selection;", ".svg") |>
+  inx_extension(_, "dxf12_outlines.py", ".dxf") |>
+  ArchGDAL.read(_) |>
+  ArchGDAL.getlayer(_, 0) |>
+  DataFrame(_) |>
+  _.""  |>
+  DataFrame(geometry=_) |>
+  make_poly(_, false) |>
+  _.geometry[order] |> plot
+```
+
+Helper function `draw_poly` reads polygons from `SHP` file with `Shapefile` module. Polygons are colored and finally plotted using `Luxor`. General idea how to read polygons from shapefiles comes from <https://juliagraphics.github.io/Luxor.jl/v1.0/examples.html#Maps-1>
+
+```{julia}
+using Shapefile, Luxor
+include(joinpath(dirname(pathof(Luxor)), "readshapefiles.jl"))
+
+function draw_poly(x, hue, dw, dh, ox, oy, sx, sy)
+  sig = open(x) do f
+    read(f, Shapefile.Handle)
+  end
+  Drawing(dw, dh)
+  origin(Point(ox, oy))
+  scale(sx, sy)
+  gsave()
+  background("#FFFFFF")
+  i = 1
+  for shape in sig.shapes
+      pgons, bbox = convert(Array{Luxor.Point, 1}, shape)
+      for pgon in pgons
+          sethue(hue[i])
+          poly(pgon, :fill)
+          i = i + 1
+      end
+  end
+  grestore()
+  finish()
+  preview()
+end
+
+colours = ["#000000", "#4d64ae", "#000000", "#000000", "#ca3c32", "#9259a3", "#399746", "#000000", "#000000", "#000000", "#FFFFFF"]
+
+@pipe "https://upload.wikimedia.org/wikipedia/commons/1/1f/Julia_Programming_Language_Logo.svg" |>
+  inx_actions(_, "file-open;select-all;transform-scale:10;page-fit-to-selection;", ".svg") |>
+  inx_extension(_, "dxf12_outlines.py", ".dxf") |>
+  ArchGDAL.read(_) |>
+  ArchGDAL.getlayer(_, 0) |>
+  DataFrame(_) |>
+  _.""  |>
+  DataFrame(geometry=_) |>
+  make_poly(_, true) |>
+  draw_poly(_, colours, 4000, 2000, 500, 1900, 7, 7)
+```
+
+## Taras Shevchenko's signature
+
+Handwritten signature saved in SVG (conversion from `PNG` to `SVG` was done before in Inkscape using "trace bitmap") is converted in `DXF` and `SHP` to draw it in `Luxor`. Blue color indicates elements obtained as a result of the procedure but not visible.
+
+```{julia}
+colours = ["#000000", "#0000FF", "#0000FF", "#0000FF", "#FFFFFF",
+       "#FFFFFF", "#FFFFFF", "#000000", "#0000FF", "#0000FF",
+       "#FFFFFF", "#FFFFFF", "#000000", "#0000FF", "#0000FF",
+       "#0000FF", "#0000FF", "#000000", "#0000FF", "#FFFFFF",
+       "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF",
+       "#000000", "#000000", "#000000"]
+
+@pipe "https://upload.wikimedia.org/wikipedia/commons/0/0a/Taras_Shevchenko%E2%80%99s_signature.svg" |>
+  inx_extension(_, "dxf12_outlines.py", ".dxf") |>
+  ArchGDAL.read(_) |>
+  ArchGDAL.getlayer(_, 0) |>
+  DataFrame(_) |>
+  _.""  |>
+  DataFrame(geometry=_) |>
+  make_poly(_, true) |>
+  draw_poly(_, colours, 4000, 2000, 20, 1700, 12, 12)
+```
