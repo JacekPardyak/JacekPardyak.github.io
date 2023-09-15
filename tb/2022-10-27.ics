@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+PRODID:-//ATFutures/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ical-c570bc53-ef08-4e87-ae4b-19de182311c2
+DTSTART:20221027T110000
+DTEND:20221027T120000
+SUMMARY:Data Science meets Law
+LOCATION:Online meeting
+DESCRIPTION:Join the online meeting at the scheduled time https://team-blue-nl.zoom.us/j/85158293510?pwd=YlVJTjFtbFhTelUvbzNGbWZ1WWtWZz09 and have fun. More information on our channel #tb-data-science-talks https://app.slack.com/client/TQEG5EU7K/C030VQC3WK0 .
+END:VEVENT
+END:VCALENDAR
