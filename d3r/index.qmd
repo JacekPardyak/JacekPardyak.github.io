@@ -1,0 +1,177 @@
+---
+title: "Data Visualization with D3 and R"
+format: html
+---
+
+## Quarto
+
+```{r}
+#| results: asis
+
+library(d3r)
+
+style = 'svg {
+  border: 1px solid black;
+}'
+
+'// Dimensions and margins
+const width = 600;
+const height = 400;
+
+// Create SVG container
+const svg = d3.select("#container")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+let is_drawing = false; 
+
+svg.on("mousemove", function(event) {
+    var pos = d3.pointer(event, this); 
+    if (is_drawing) {
+        svg.append("circle")
+            .attr("cx", pos[0])
+            .attr("cy", pos[1])
+            .style("fill", "red")
+            .attr("r", 3);
+    }
+}).on("mousedown", function() {
+    is_drawing = true;
+}).on("mouseup", function() {
+    is_drawing = false;
+});
+
+// Create a separate div for the button
+const buttonContainer = d3.select("body")
+    .append("div")
+    .attr("id", "buttonContainer")
+    .style("margin-top", "10px");
+    
+// Add download button
+buttonContainer.append("button")
+  .text("Download SVG")
+  .on("click", function() {
+    const serializer = new XMLSerializer();
+    const svgBlob = new Blob([serializer.serializeToString(svg.node())], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+  
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "drawing.svg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+});
+' |> make(title = "Draw Something & Download It", 
+          mode = "Quarto",
+          dir = "html_output",
+          style = style,
+          width = 610, 
+          height = 600) 
+
+```
+
+```{r}
+#| echo: false
+#| results: asis
+
+style = '
+        svg {
+            border: 1px solid black;
+        }
+        .control-point {
+            fill: red;
+            cursor: grab;
+        }
+        .line {
+    fill: none;
+            stroke: gray;
+            stroke-dasharray: 4;
+        }
+        .curve {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+'
+
+'const width = 600, height = 400;
+
+// Create SVG container
+const svg = d3.select("#container")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+let points = [];
+
+// Function to update the Bezier curve
+function updateBezier() {
+    svg.selectAll(".control-point, .curve, .line").remove();
+
+    // Draw control points
+    svg.selectAll(".control-point")
+    .data(points)
+    .enter().append("circle")
+    .attr("class", "control-point")
+    .attr("r", 6)
+    .attr("cx", d => d[0])
+    .attr("cy", d => d[1])
+    .call(d3.drag()
+    .on("drag", function(event, d) {
+        d[0] = event.x;
+        d[1] = event.y;
+        updateBezier();
+    })
+);
+
+    // Draw helper lines between control points
+    if (points.length > 1) {
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", d3.line()(points));
+    }
+
+    // Draw the Bezier curve (Quadratic or Cubic)
+    if (points.length === 3) {
+        svg.append("path")
+            .attr("class", "curve")
+            .attr("d", `M${points[0]} Q${points[1]} ${points[2]}`);
+    } else if (points.length === 4) {
+        svg.append("path")
+            .attr("class", "curve")
+            .attr("d", `M${points[0]} C${points[1]} ${points[2]} ${points[3]}`);
+    }
+}
+
+// Add points on click
+svg.on("click", function(event) {
+    if (points.length < 4) { // Max 4 points for cubic Bezier
+        const coords = d3.pointer(event, this);
+        points.push(coords);
+        updateBezier();
+    }
+});
+// Create a separate div for the button
+const buttonContainer = d3.select("body")
+    .append("div")
+    .attr("id", "buttonContainer")
+    .style("margin-top", "10px");
+
+// Reset Button
+d3.select("#buttonContainer")
+    .append("button")
+    .text("Reset")
+    .on("click", function() {
+        points = [];
+        updateBezier();
+    });
+' |> make(title = "Draw Bézier Curve", 
+          mode = "Quarto", 
+          dir = "html_output",
+          style = style,
+          width = 650,  #"100%"
+          height = 600) #"600px" 
+
+```
