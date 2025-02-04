@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d3r</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+svg {
+    border: 1px solid black;
+}
+.polygon {
+    fill: steelblue;
+    stroke: black;
+    stroke-width: 2;
+}
+</style>
+</head>
+<body>
+    <div id="container"></div>
+    <script>// Set title
+d3.select("#container")
+  .insert("h2", ":first-child")
+  .text("Upload JSON File to Redraw Shape"); 
+// Create a separate div for the button
+const buttonContainer = d3.select("body")
+    .append("div")
+    .attr("id", "controls")
+    .style("margin-top", "10px");
+
+// Dynamically create the file input
+const uploadInput = document.createElement("input");
+uploadInput.type = "file";
+uploadInput.id = "upload";
+uploadInput.accept = ".json";
+
+document.getElementById("controls").appendChild(uploadInput);
+
+const width = 600, height = 400;
+
+const svg = d3.select("#container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+// Initial polygon data
+let polygonData = [
+            { x: 350, y: 75 }, { x: 379, y: 161 }, { x: 469, y: 161 },
+            { x: 397, y: 215 }, { x: 423, y: 301 }, { x: 350, y: 250 },
+            { x: 277, y: 301 }, { x: 303, y: 215 }, { x: 231, y: 161 },
+            { x: 321, y: 161 }
+        ];
+
+        // Function to convert data to path string
+        function getPathData(data) {
+            return "M" + data.map(d => `${d.x},${d.y}`).join(" ") + " Z";
+        }
+
+        // Draw initial polygon
+        let polygon = svg.append("path")
+            .attr("d", getPathData(polygonData))
+            .attr("class", "polygon");
+
+        // Handle file upload
+        document.getElementById("upload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "application/json") {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const newData = JSON.parse(e.target.result);
+                        if (Array.isArray(newData) && newData.every(d => `x` in d && `y` in d)) {
+                            // Update polygon
+                            polygonData = newData;
+                            polygon.attr("d", getPathData(polygonData));
+                        } else {
+                            alert("Invalid JSON format! Expected an array of { x, y } objects.");
+                        }
+                    } catch (error) {
+                        alert("Error parsing JSON file.");
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                alert("Please upload a valid JSON file.");
+            }
+        });
+</script>
+</body>
+</html>
+

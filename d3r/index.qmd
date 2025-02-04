@@ -1,15 +1,102 @@
 ---
-title: "Data Visualization with D3 and R"
+title: "Data Visualization with D3 and R (d3r)"
 format: html
 ---
 
-## Quarto
+## Upload & Download data
 
 ```{r}
 #| results: asis
-
 library(d3r)
 
+# upladed JSON is of form: [{"x":350,"y":75},{"x":379,"y":161}, ...]
+
+style = '
+svg {
+    border: 1px solid black;
+}
+.polygon {
+    fill: steelblue;
+    stroke: black;
+    stroke-width: 2;
+}
+'
+'// Create a separate div for the button
+const buttonContainer = d3.select("body")
+    .append("div")
+    .attr("id", "controls")
+    .style("margin-top", "10px");
+
+// Dynamically create the file input
+const uploadInput = document.createElement("input");
+uploadInput.type = "file";
+uploadInput.id = "upload";
+uploadInput.accept = ".json";
+
+document.getElementById("controls").appendChild(uploadInput);
+
+const width = 600, height = 400;
+
+const svg = d3.select("#container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+// Initial polygon data
+let polygonData = [
+            { x: 350, y: 75 }, { x: 379, y: 161 }, { x: 469, y: 161 },
+            { x: 397, y: 215 }, { x: 423, y: 301 }, { x: 350, y: 250 },
+            { x: 277, y: 301 }, { x: 303, y: 215 }, { x: 231, y: 161 },
+            { x: 321, y: 161 }
+        ];
+
+        // Function to convert data to path string
+        function getPathData(data) {
+            return "M" + data.map(d => `${d.x},${d.y}`).join(" ") + " Z";
+        }
+
+        // Draw initial polygon
+        let polygon = svg.append("path")
+            .attr("d", getPathData(polygonData))
+            .attr("class", "polygon");
+
+        // Handle file upload
+        document.getElementById("upload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "application/json") {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const newData = JSON.parse(e.target.result);
+                        if (Array.isArray(newData) && newData.every(d => `x` in d && `y` in d)) {
+                            // Update polygon
+                            polygonData = newData;
+                            polygon.attr("d", getPathData(polygonData));
+                        } else {
+                            alert("Invalid JSON format! Expected an array of { x, y } objects.");
+                        }
+                    } catch (error) {
+                        alert("Error parsing JSON file.");
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                alert("Please upload a valid JSON file.");
+            }
+        });
+' |> make(title = "Upload JSON File to Redraw Shape", 
+          mode = "Quarto",
+          dir = "/index_files/html_output",
+          style = style,
+          width = 610, 
+          height = 600) 
+
+
+```
+
+
+```{r}
+#| results: asis
 style = 'svg {
   border: 1px solid black;
 }'
@@ -65,7 +152,7 @@ buttonContainer.append("button")
 });
 ' |> make(title = "Draw Something & Download It", 
           mode = "Quarto",
-          dir = "html_output",
+          dir = "/index_files/html_output",
           style = style,
           width = 610, 
           height = 600) 
@@ -73,7 +160,6 @@ buttonContainer.append("button")
 ```
 
 ```{r}
-#| echo: false
 #| results: asis
 
 style = '
@@ -167,11 +253,211 @@ d3.select("#buttonContainer")
         points = [];
         updateBezier();
     });
-' |> make(title = "Draw Bézier Curve", 
+' |> make(title = "Draw & Update Bézier Curve (click 3 or 4 points)", 
           mode = "Quarto", 
-          dir = "html_output",
+          dir = "/index_files/html_output",
           style = style,
           width = 650,  #"100%"
           height = 600) #"600px" 
 
 ```
+
+
+## Own Data
+
+```{r}
+#| results: asis
+library(dplyr)
+library(jsonlite)
+data = tibble(t = seq(0, 2*pi, length.out = 100)) %>%
+    mutate(x = 350 + -90*sin(2*t) - 50*sin(3*t))  %>%
+    mutate(y = 200 - 90*cos(2*t) + 50*cos(3*t)) %>%
+    select(!t) |> toJSON()
+data
+
+style = '
+svg {
+    border: 1px solid black;
+}
+.polygon{
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+'
+
+'// SVG Dimensions
+const width = 600, height = 400;
+
+// Create SVG container
+const svg = d3.select("#container")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Convert JSON coordinates into an SVG path string
+var pathData = "M" + data.map(d => `${d.x},${d.y}`).join(" ") + " Z";
+
+var polygon = svg.append("path")
+    .attr("d", pathData)
+    .attr("class", "polygon");
+
+' |> make(title = "Draw a Star Curve From Parametric Equation", 
+          mode = "Quarto",
+          dir = "/index_files/html_output",
+          style = style,
+          data = data,
+          width = 650,
+          height = 600)
+```
+
+## Canvas
+
+```{r}
+#| results: asis
+'const width = 600;
+const height = 400;
+const numPoints = 1000;
+
+// Create Canvas
+const canvas = d3.select("#container")
+.append("canvas")
+.attr("width", width)
+.attr("height", height)
+.node();
+
+const ctx = canvas.getContext("2d");
+
+// Generate random dataset
+const data = d3.range(numPoints).map(() => ({
+  x: Math.random() * width,
+  y: Math.random() * height,
+  color: d3.interpolateCool(Math.random()) // Color gradient
+}));
+
+// Function to draw points
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+  data.forEach(d => {
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+    ctx.fillStyle = d.color;
+    ctx.fill();
+  });
+}
+
+// Draw the scatterplot
+draw();
+' |> make(mode = "Quarto", 
+          title = "Random Points in Canvas",
+          dir = "/index_files/html_output",
+          width = 650,
+          height = 600)
+
+```
+
+## Zoom and Tooltip
+
+```{r}
+#| results: asis
+style = '
+.tooltip {
+	position: absolute;
+	text-align: center;
+	padding: 12px;
+	font: 15px sans-serif;
+	background: lightsteelblue;
+	border-radius: 11px;
+	border-radius: 8px;
+	pointer-events: none;
+}
+'
+
+'// Function to visualize (e.g., sine wave)
+function f(x) {
+  return Math.sin(x) - Math.cos(2*x);
+}
+
+// Tooltip
+const tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "tooltip");
+
+// Create SVG inside the div
+const width = 600;
+const height = 400;
+const margin = 40;
+
+const svg = d3.select("#container")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// Generate data points
+const data = d3.range(-Math.PI, Math.PI, 0.05).map(x => ({ x, y: f(x) }));
+
+// Define scales
+const xScale = d3.scaleLinear().domain([-Math.PI, Math.PI]).range([margin, width - margin]);
+const yScale = d3.scaleLinear().domain([-1, 1]).range([height - margin, margin]);
+
+// define group
+let g = svg.append("g");
+
+// Define line generator
+const line = d3.line()
+  .x(d => xScale(d.x))
+  .y(d => yScale(d.y));
+
+// Append path for line
+g.append("path")
+  .datum(data)
+  .attr("fill", "none")
+  .attr("stroke", "steelblue")
+  .attr("stroke-width", 2)
+  .attr("d", line);
+
+	g.selectAll("circle")
+		.data(data)
+		.join("circle")
+		.attr("cx", d => xScale(d.x))
+    .attr("cy", d => yScale(d.y))
+		.attr("r", 5)
+		.style("fill", "#191970")
+		.on("mouseover", function (event, d) {
+			tooltip.transition().duration(200).style("opacity", 0.6);
+			tooltip
+				.html(`(x, y): (${d.x.toFixed(2)}, ${d.y.toFixed(2)})`)
+				.style("left", event.pageX + "px")
+				.style("top", event.pageY - 28 + "px");
+		})
+		.on("mouseout", function (d) {
+			tooltip.transition().duration(500).style("opacity", 0);
+		});
+
+// Zooming
+let zooming = d3
+		.zoom()
+		.scaleExtent([1, 8])
+		.extent([
+			[0, 0],
+			[width, height]
+		])
+		.on("zoom", function (event) {
+			g.selectAll("path").attr("transform"
+			  ,event.transform)
+			  .attr("stroke-width", 5 / event.transform.k);
+			g.selectAll("circle")
+				.attr("transform", event.transform)
+				.attr("r", 5 / event.transform.k);
+		});
+
+svg.call(zooming);
+' |> make(mode = "Quarto", 
+          title = "Chart with zoom & tooltip",
+          dir = "/index_files/html_output",
+          style = style,
+          width = 650,
+          height = 600)
+
+```
+
