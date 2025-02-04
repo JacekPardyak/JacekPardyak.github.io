@@ -86,7 +86,7 @@ let polygonData = [
         });
 ' |> make(title = "Upload JSON File to Redraw Shape", 
           mode = "Quarto",
-          dir = "/index_files/html_output",
+          dir = "html_output",
           style = style,
           width = 610, 
           height = 600) 
@@ -152,7 +152,7 @@ buttonContainer.append("button")
 });
 ' |> make(title = "Draw Something & Download It", 
           mode = "Quarto",
-          dir = "/index_files/html_output",
+          dir = "html_output",
           style = style,
           width = 610, 
           height = 600) 
@@ -255,7 +255,7 @@ d3.select("#buttonContainer")
     });
 ' |> make(title = "Draw & Update Bézier Curve (click 3 or 4 points)", 
           mode = "Quarto", 
-          dir = "/index_files/html_output",
+          dir = "html_output",
           style = style,
           width = 650,  #"100%"
           height = 600) #"600px" 
@@ -304,7 +304,7 @@ var polygon = svg.append("path")
 
 ' |> make(title = "Draw a Star Curve From Parametric Equation", 
           mode = "Quarto",
-          dir = "/index_files/html_output",
+          dir = "html_output",
           style = style,
           data = data,
           width = 650,
@@ -350,7 +350,7 @@ function draw() {
 draw();
 ' |> make(mode = "Quarto", 
           title = "Random Points in Canvas",
-          dir = "/index_files/html_output",
+          dir = "html_output",
           width = 650,
           height = 600)
 
@@ -454,7 +454,7 @@ let zooming = d3
 svg.call(zooming);
 ' |> make(mode = "Quarto", 
           title = "Chart with zoom & tooltip",
-          dir = "/index_files/html_output",
+          dir = "html_output",
           style = style,
           width = 650,
           height = 600)
